@@ -19,15 +19,26 @@
 
   Opencast player template.
   The purpose of this template is to render a opencast video.
+  Context variables required for this template:
+  * src - source of video
+  * link - link to video
+  * width - adds % sign
+
+  Example context (json):
+  {
+      "src": "https://electures.uni-muenster.de/paella/ui/watch.html?id=anicuhsc-naco-sac43-29384",
+      "link": "https://electures.uni-muenster.de/paella/ui/watch.html?id=anicuhsc-naco-sac43-29384",
+      "width":"%"
+   }
 }}
 
 {{! Print the iframe. }}
 {{# loggedin}}
-    <iframe src="{{src}}" width="95%" height="455px" class="ocplayer" allowfullscreen="true"></iframe>
+    <iframe src="{{src}}" width="95{{width}}" height="455" class="ocplayer" allowfullscreen></iframe>
 {{/ loggedin}}
 {{^loggedin}}
 {{! Don't load the video yet if not logged in. }}
-    <iframe data-frameSrc="{{src}}" width="95%" height="455px" class="ocplayer" allowfullscreen="true"></iframe>
+    <iframe data-frameSrc="{{src}}" width="95{{width}}" height="455" class="ocplayer" allowfullscreen></iframe>
 {{/loggedin}}
 {{! Print the link to the video. }}
 <a style="display:block;" target="_blank" href="{{link}}">{{#str}} to_the_video, filter_opencast {{/str}}</a>

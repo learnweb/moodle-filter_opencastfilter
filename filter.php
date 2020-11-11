@@ -19,7 +19,7 @@
  *
  *  This filter will replace any links to opencast videos with the selected player from opencast.
  *
- * @package    filter
+ * @package    filter_opencast
  * @subpackage opencast
  * @copyright  2018 Tamara Gunkel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -31,15 +31,23 @@ require_once($CFG->dirroot . '/filter/opencast/lib.php');
 /**
  * Automatic opencast videos filter class.
  *
- * @package    filter
+ * @package    filter_opencast
  * @subpackage opencast
  * @copyright  2018 Tamara Gunkel
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class filter_opencast extends moodle_text_filter {
 
+    /** @var bool is the login rendered? */
     private static $loginrendered = false;
 
+    /**
+     * Filter the given input.
+     * @param string $text
+     * @param array $options
+     * @return string|string[]|null
+     * @throws dml_exception
+     */
     public function filter($text, array $options = array()) {
         global $PAGE;
 
@@ -72,7 +80,7 @@ class filter_opencast extends moodle_text_filter {
             $video = false;
 
             foreach ($matches as $match) {
-            	// Check if the match is a video tag.
+                // Check if the match is a video tag.
                 if (substr($match, 0, 6) === "<video") {
                     $video = true;
                 } else if ($video) {
@@ -93,20 +101,20 @@ class filter_opencast extends moodle_text_filter {
                         if (strpos($link, 'http') !== 0) {
                             $link = 'http://' . $link;
                         }
-
                         // Create source with embedded mode.
                         $src = $link;
-
                         // Collect the needed data being submitted to the template.
                         $mustachedata = new stdClass();
                         $mustachedata->loggedin = $loggedin;
                         $mustachedata->src = $src;
                         $mustachedata->link = $link;
+                        $mustachedata->width = '%';
 
-                        $newtext =  $renderer->render_player($mustachedata);
+                        $newtext = $renderer->render_player($mustachedata);
 
                         // Replace video tag.
-                        $text = preg_replace('/<video(?:(?!<\/video>).)*?' . preg_quote($match, '/') . '.*?<\/video>/', $newtext, $text, 1);
+                        $text = preg_replace('/<video(?:(?!<\/video>).)*?' . preg_quote($match, '/') .
+                            '.*?<\/video>/', $newtext, $text, 1);
                     }
                 }
             }

@@ -17,7 +17,7 @@
 /**
  * Opencast filter
  *
- * @package    filter
+ * @package    filter_opencast
  * @subpackage opencastfilter
  * @copyright  2018 Tamara Gunkel, 2020 Nina Herrmann
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -30,6 +30,6 @@ $plugin->version = 2018031902;        // The current plugin version (Date: YYYYM
 $plugin->requires = 2017050500;        // Requires this Moodle version.
 $plugin->component = 'filter_opencast'; // Full name of the plugin.
 $plugin->dependencies = array(
-    'block_opencast' => 2019052900, // Requires Block Opencast and Tool Opencast
+    'block_opencast' => 2019052900, // Requires Block Opencast and Tool Opencast.
     'tool_opencast' => 2018102900,
 );
